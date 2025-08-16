@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Muud Admin Panel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Muud Song Insertion and Search</h1>
+    
+    <section>
+        <h2>Insert Song</h2>
+        <form id="insertForm">
+            <label>Singer: <input type="text" id="singer"></label><br>
+            <label>Song Name: <input type="text" id="song_name"></label><br>
+            <label>Genre: <input type="text" id="genre"></label><br>
+            <label>Lyrics: <textarea id="lyrics"></textarea></label><br>
+            <button type="submit">Insert</button>
+        </form>
+        <div id="insertResult"></div>
+    </section>
+    
+    <section>
+        <h2>Search Songs</h2>
+        <input type="text" id="query" placeholder="Enter search query">
+        <select id="type">
+            <option value="hybrid">Hybrid</option>
+            <option value="keyword">Keyword</option>
+            <option value="semantic">Semantic</option>
+        </select>
+        <input type="text" id="genreFilter" placeholder="Genre filter (optional)">
+        <button id="searchBtn">Search</button>
+        <div id="searchResults"></div>
+    </section>
+    
+    <script src="script.js"></script>
+</body>
+</html>
