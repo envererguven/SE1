@@ -1,0 +1,20 @@
+Ensure Docker and Docker Compose are installed.
+Ensure Ollama is running locally on port 11434 with the LLaMA 3.2:1b model pulled.
+Build the images:
+textdocker-compose build
+
+Run the services:
+textdocker-compose up -d
+
+Access:
+
+Frontend: http://localhost:8080 (admin panel).
+Backend API: http://localhost:5000.
+Elasticsearch: http://localhost:9200 (for debugging).
+
+
+Stop:
+textdocker-compose down
+
+
+This setup is ready for testing. Extend by adding more endpoints or schema fields for other apps. If issues with Ollama embeddings, check model compatibility or adjust the get_embedding function. Let me know for refinements!2.5sHow can Grok help?
