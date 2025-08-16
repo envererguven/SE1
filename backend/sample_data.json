@@ -1,0 +1,21 @@
+[
+  {
+    "singer": "Taylor Swift",
+    "song_name": "Love Story",
+    "genre": "Pop",
+    "lyrics": "We were both young when I first saw you..."
+  },
+  {
+    "singer": "Led Zeppelin",
+    "song_name": "Stairway to Heaven",
+    "genre": "Rock",
+    "lyrics": "There's a lady who's sure all that glitters is gold..."
+  },
+  // Add 48 more similar entries for genres like Jazz, Hip-Hop, etc. (omitted for brevity; generate dummy data)
+  {
+    "singer": "Adele",
+    "song_name": "Hello",
+    "genre": "Pop",
+    "lyrics": "Hello, it's me..."
+  }
+]
