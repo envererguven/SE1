@@ -1,0 +1,23 @@
+# Dockerfile.ollama
+touch Dockerfile.ollama
+cat > Dockerfile.ollama << 'EOF'
+# Use a base image with necessary dependencies
+FROM ubuntu:22.04
+
+# Install curl and other dependencies
+RUN apt-get update && apt-get install -y curl
+
+# Install Ollama
+RUN curl -fsSL https://ollama.com/install.sh | sh
+
+# Set working directory
+WORKDIR /app
+
+# Pull the model during build (llama3.2:1b)
+RUN ollama pull llama3.2:1b
+
+# Expose port
+EXPOSE 11434
+
+# Command to serve Ollama
+CMD ["ollama", "serve"]
