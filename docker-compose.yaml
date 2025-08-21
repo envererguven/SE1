@@ -1,30 +1,80 @@
 version: '3.8'
 
 services:
-  backend:
-    build: ./backend
-    ports:
-      - "5000:5000"
-    depends_on:
-      - elasticsearch
-    environment:
-      - FLASK_APP=app.py
-      - FLASK_ENV=development
-
-  frontend:
-    build: ./frontend
-    ports:
-      - "8080:80"
-
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:8.15.0
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.14.1
     environment:
       - discovery.type=single-node
-      - xpack.security.enabled=false
+      - xpack.security.enabled=false  # Disable security for dev
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
     ports:
       - "9200:9200"
     volumes:
-      - esdata:/usr/share/elasticsearch/data
+      - es-data:/usr/share/elasticsearch/data
+    networks:
+      - search-net
+
+  ollama:
+    build:
+      context: .
+      dockerfile: Dockerfile.ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama-data:/root/.ollama
+    networks:
+      - search-net
+    command: ["ollama", "serve"]
+
+  ingestion:
+    build:
+      context: .
+      dockerfile: ingestion/Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - elasticsearch
+      - ollama
+    networks:
+      - search-net
+    environment:
+      - ES_HOST=elasticsearch
+      - OLLAMA_HOST=http://ollama:11434
+
+  search:
+    build:
+      context: .
+      dockerfile: search/Dockerfile
+    ports:
+      - "8001:8001"
+    depends_on:
+      - elasticsearch
+      - ollama
+    networks:
+      - search-net
+    environment:
+      - ES_HOST=elasticsearch
+      - OLLAMA_HOST=http://ollama:11434
+
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "8501:8501"
+    depends_on:
+      - ingestion
+      - search
+    networks:
+      - search-net
+    environment:
+      - INGEST_URL=http://ingestion:8000
+      - SEARCH_URL=http://search:8001
+
+networks:
+  search-net:
+    driver: bridge
 
 volumes:
-  esdata:
+  es-data:
+  ollama-data:
